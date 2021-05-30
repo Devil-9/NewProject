@@ -22,9 +22,9 @@ class MyApp extends StatelessWidget {
         brightness: Brightness.dark
       ),
       debugShowCheckedModeBanner: false,
-      initialRoute: MyRoutes.homeRoute,
+      //initialRoute: MyRoutes.homeRoute,
       routes: {
-        //"/": (context) => LoginPage(),
+        "/": (context) => LoginPage(),
         MyRoutes.homeRoute: (context) => HomePage(),
         MyRoutes.loginRoute: (context)=> LoginPage(),
       },
