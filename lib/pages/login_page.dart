@@ -9,7 +9,7 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   bool changebutton = false;
   String name = "";
-
+  String pass = "";
   final _formkey = GlobalKey<FormState>();
 
   moveToHome(BuildContext context) async {
@@ -69,7 +69,7 @@ class _LoginPageState extends State<LoginPage> {
                           return "Username Can't be empty";
                         }
 
-                       return null;
+                        return null;
                       },
                       onChanged: (value) {
                         name = value;
@@ -85,8 +85,9 @@ class _LoginPageState extends State<LoginPage> {
                       validator: (value) {
                         if (value!.isEmpty) {
                           return "Password Can't be empty";
+                        } else if (value.length < 8) {
+                          return "Password is less than 8 digits";
                         }
-
                         return null;
                       },
                     ),
