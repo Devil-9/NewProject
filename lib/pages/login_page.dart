@@ -86,6 +86,9 @@ class _LoginPageState extends State<LoginPage> {
                         if (value!.isEmpty) {
                           return "Password Can't be empty";
                         }
+                        else if (value.length < 8) {
+                            return "Password Can't be less than 8 digit";
+                        }
 
                         return null;
                       },
