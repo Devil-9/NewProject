@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter1/pages/signup_page.dart';
 import 'package:flutter1/utils/routs.dart';
 import 'package:flutter1/widgets/custom_shape.dart';
 import 'package:flutter1/widgets/responsive_ui.dart';
