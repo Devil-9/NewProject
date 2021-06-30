@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter1/pages/home_page.dart';
 import 'package:flutter1/pages/home_screen.dart';
 import 'package:flutter1/pages/login_page.dart';
+import 'package:flutter1/pages/signup_page.dart';
 import 'package:flutter1/utils/routs.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -26,6 +27,7 @@ class MyApp extends StatelessWidget {
         MyRoutes.homeRoute: (context) => HomePage(),
         MyRoutes.loginRoute: (context) => LoginPage(),
         MyRoutes.homescreenRoute: (context) => HomeScreen(),
+        MyRoutes.signupRoute: (context) => SignupPage(),
       },
     );
   }
