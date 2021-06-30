@@ -10,7 +10,6 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -19,18 +18,15 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.deepPurple,
         fontFamily: GoogleFonts.lato().fontFamily,
       ),
-      darkTheme: ThemeData(
-        brightness: Brightness.dark
-      ),
-      debugShowCheckedModeBanner: false,
+      darkTheme: ThemeData(brightness: Brightness.dark),
+      //debugShowCheckedModeBanner: false,
       initialRoute: MyRoutes.homescreenRoute,
       routes: {
         "/": (context) => HomeScreen(),
         MyRoutes.homeRoute: (context) => HomePage(),
-        MyRoutes.loginRoute: (context)=> LoginPage(),
+        MyRoutes.loginRoute: (context) => LoginPage(),
         MyRoutes.homescreenRoute: (context) => HomeScreen(),
       },
-      
     );
   }
 }
