@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter1/pages/home_page.dart';
-import 'package:flutter1/pages/home_screen.dart';
+import 'package:flutter1/pages/splash_screen.dart';
 import 'package:flutter1/pages/login_page.dart';
+import 'package:flutter1/pages/product_page1.dart';
 import 'package:flutter1/pages/signup_page.dart';
 import 'package:flutter1/utils/routs.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -21,13 +22,14 @@ class MyApp extends StatelessWidget {
       ),
       darkTheme: ThemeData(brightness: Brightness.dark),
       //debugShowCheckedModeBanner: false,
-      initialRoute: MyRoutes.homescreenRoute,
+      initialRoute: MyRoutes.splashcreenRoute,
       routes: {
-        "/": (context) => HomeScreen(),
+        "/": (context) => SplashScreen(),
         MyRoutes.homeRoute: (context) => HomePage(),
         MyRoutes.loginRoute: (context) => LoginPage(),
-        MyRoutes.homescreenRoute: (context) => HomeScreen(),
+        MyRoutes.splashcreenRoute: (context) => SplashScreen(),
         MyRoutes.signupRoute: (context) => SignupPage(),
+        MyRoutes.productpage1Route: (context) => ProductPage1(),
       },
     );
   }
