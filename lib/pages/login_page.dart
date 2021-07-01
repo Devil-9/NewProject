@@ -186,15 +186,16 @@ class _LoginScreenState extends State<LoginScreen> {
       textEditingController: emailController,
       icon: Icons.email,
       hint: "Email ID",
+      obscureText: false,
     );
   }
 
   Widget passwordTextFormField() {
     return CustomTextField(
+      obscureText: true,
+      icon: Icons.lock,
       keyboardType: TextInputType.emailAddress,
       textEditingController: passwordController,
-      icon: Icons.lock,
-      obscureText: true,
       hint: "Password",
     );
   }
