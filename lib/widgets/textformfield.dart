@@ -13,7 +13,7 @@ class CustomTextField extends StatefulWidget {
     required this.textEditingController,
     required this.keyboardType,
     required this.icon,
-    this.obscureText = false,
+    required this.obscureText,
   });
 
   @override

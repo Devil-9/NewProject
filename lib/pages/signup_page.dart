@@ -163,6 +163,7 @@ class _SignupPageState extends State<SignupPage> {
       icon: Icons.person,
       hint: "First Name",
       textEditingController: TextEditingController(),
+      obscureText: false,
     );
   }
 
@@ -172,6 +173,7 @@ class _SignupPageState extends State<SignupPage> {
       icon: Icons.person,
       hint: "Last Name",
       textEditingController: TextEditingController(),
+      obscureText: false,
     );
   }
 
@@ -181,6 +183,7 @@ class _SignupPageState extends State<SignupPage> {
       icon: Icons.email,
       hint: "Email ID",
       textEditingController: TextEditingController(),
+      obscureText: false,
     );
   }
 
@@ -190,6 +193,7 @@ class _SignupPageState extends State<SignupPage> {
       icon: Icons.phone,
       hint: "Mobile Number",
       textEditingController: TextEditingController(),
+      obscureText: false,
     );
   }
 
