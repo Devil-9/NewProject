@@ -21,6 +21,7 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   bool changebutton = false;
   String name = "";
+  String password = "";
 
   final _formkey = GlobalKey<FormState>();
 
@@ -186,15 +187,38 @@ class _LoginScreenState extends State<LoginScreen> {
       textEditingController: emailController,
       icon: Icons.email,
       hint: "Email ID",
+      obscureText: false,
     );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    // Start listening to changes.
+    emailController.addListener(_printLatestValue);
+    passwordController.addListener(_printLatestValue);
+  }
+
+  @override
+  void dispose() {
+    // Clean up the controller when the widget is removed from the widget tree.
+    // This also removes the _printLatestValue listener.
+    emailController.dispose();
+    super.dispose();
+  }
+
+  void _printLatestValue() {
+    name = emailController.text;
+    password = passwordController.text;
   }
 
   Widget passwordTextFormField() {
     return CustomTextField(
+      obscureText: true,
+      icon: Icons.lock,
       keyboardType: TextInputType.emailAddress,
       textEditingController: passwordController,
-      icon: Icons.lock,
-      obscureText: true,
       hint: "Password",
     );
   }
@@ -236,7 +260,8 @@ class _LoginScreenState extends State<LoginScreen> {
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),
       onPressed: () {
         Navigator.pushNamed(context, MyRoutes.homeRoute);
-        print("Routing to your account");
+        print(name);
+        print(password);
         Scaffold.of(context)
             // ignore: deprecated_member_use
             .showSnackBar(SnackBar(content: Text('Login Successful')));

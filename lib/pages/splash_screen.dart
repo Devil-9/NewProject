@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter1/utils/routs.dart';
+import 'package:hexcolor/hexcolor.dart';
 
 class SplashScreen extends StatefulWidget {
   @override
@@ -45,6 +46,7 @@ class SplashScreenState extends State<SplashScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: HexColor("#2f499e"),
       body: Stack(
         fit: StackFit.expand,
         children: <Widget>[
@@ -65,7 +67,7 @@ class SplashScreenState extends State<SplashScreen>
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               new Image.asset(
-                'assets/images/logo.png',
+                'assets/images/mainlogo.png',
                 width: animation.value * 250,
                 height: animation.value * 250,
               ),
