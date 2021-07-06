@@ -28,19 +28,19 @@ class _LoginScreenState extends State<LoginScreen> {
 
   final _formkey = GlobalKey<FormState>();
 
-  moveToHome(BuildContext context) async {
-    if (_formkey.currentState!.validate()) {
-      setState(() {
-        changebutton = true;
-      });
+  // moveToHome(BuildContext context) async {
+  //   if (_formkey.currentState!.validate()) {
+  //     setState(() {
+  //       changebutton = true;
+  //     });
 
-      await Future.delayed(Duration(seconds: 1));
-      await Navigator.pushNamed(context, MyRoutes.homeRoute);
-      setState(() {
-        changebutton = false;
-      });
-    }
-  }
+  //     await Future.delayed(Duration(seconds: 1));
+  //     await Navigator.pushNamed(context, MyRoutes.homeRoute);
+  //     setState(() {
+  //       changebutton = false;
+  //     });
+  //   }
+  // }
 
   late double _height;
   late double _width;
@@ -269,20 +269,28 @@ class _LoginScreenState extends State<LoginScreen> {
             Fluttertoast.showToast(
                 msg: 'authenticated',
                 gravity: ToastGravity.BOTTOM,
+                backgroundColor: Colors.green,
+                textColor: Colors.white,
+                fontSize: 16.0,
+                timeInSecForIosWeb: 1);
+            Navigator.pushNamed(context, MyRoutes.homeRoute);
+          } else {
+            token = val.data['msg'];
+            Fluttertoast.showToast(
+                msg: token,
+                gravity: ToastGravity.BOTTOM,
                 backgroundColor: Colors.red,
                 textColor: Colors.white,
                 fontSize: 16.0,
                 timeInSecForIosWeb: 1);
-                Navigator.pushNamed(context, MyRoutes.homeRoute);
           }
         });
 
-        
         print(email);
         print(password);
-        Scaffold.of(context)
-            // ignore: deprecated_member_use
-            .showSnackBar(SnackBar(content: Text('Wecome' + email)));
+        // Scaffold.of(context)
+        //     // ignore: deprecated_member_use
+        //     .showSnackBar(SnackBar(content: Text('Wecome' + email)));
       },
       textColor: Colors.white,
       padding: EdgeInsets.all(0.0),

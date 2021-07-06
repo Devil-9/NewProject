@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter1/pages/login_page.dart';
+import 'package:flutter1/services/authservice.dart';
+import 'package:flutter1/utils/routs.dart';
 import 'package:flutter1/widgets/custom_shape.dart';
 import 'package:flutter1/widgets/customappbar.dart';
 import 'package:flutter1/widgets/responsive_ui.dart';
 import 'package:flutter1/widgets/textformfield.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class SignupPage extends StatefulWidget {
   @override
@@ -11,12 +14,37 @@ class SignupPage extends StatefulWidget {
 }
 
 class _SignupPageState extends State<SignupPage> {
+  bool changebutton = false;
+  var firstname, lastname, email, password, phone,token;
   bool checkBoxValue = false;
   late double _height;
   late double _width;
   late double _pixelRatio;
   late bool _large;
   late bool _medium;
+
+  final _formkey = GlobalKey<FormState>();
+
+  // moveToHome(BuildContext context) async {
+  //   if (_formkey.currentState!.validate()) {
+  //     setState(() {
+  //       changebutton = true;
+  //     });
+
+  //     await Future.delayed(Duration(seconds: 1));
+  //     await Navigator.pushNamed(context, MyRoutes.homeRoute);
+  //     setState(() {
+  //       changebutton = false;
+  //     });
+  //   }
+  // }
+
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+  TextEditingController firstnameController = TextEditingController();
+  TextEditingController lastnameController = TextEditingController();
+  TextEditingController phoneController = TextEditingController();
+  GlobalKey<FormState> _key = GlobalKey();
 
   @override
   Widget build(BuildContext context) {
@@ -162,7 +190,7 @@ class _SignupPageState extends State<SignupPage> {
       keyboardType: TextInputType.text,
       icon: Icons.person,
       hint: "First Name",
-      textEditingController: TextEditingController(),
+      textEditingController: firstnameController,
       obscureText: false,
     );
   }
@@ -172,7 +200,7 @@ class _SignupPageState extends State<SignupPage> {
       keyboardType: TextInputType.text,
       icon: Icons.person,
       hint: "Last Name",
-      textEditingController: TextEditingController(),
+      textEditingController: lastnameController,
       obscureText: false,
     );
   }
@@ -182,7 +210,7 @@ class _SignupPageState extends State<SignupPage> {
       keyboardType: TextInputType.emailAddress,
       icon: Icons.email,
       hint: "Email ID",
-      textEditingController: TextEditingController(),
+      textEditingController: emailController,
       obscureText: false,
     );
   }
@@ -192,7 +220,7 @@ class _SignupPageState extends State<SignupPage> {
       keyboardType: TextInputType.number,
       icon: Icons.phone,
       hint: "Mobile Number",
-      textEditingController: TextEditingController(),
+      textEditingController: phoneController,
       obscureText: false,
     );
   }
@@ -203,8 +231,36 @@ class _SignupPageState extends State<SignupPage> {
       obscureText: true,
       icon: Icons.lock,
       hint: "Password",
-      textEditingController: TextEditingController(),
+      textEditingController: passwordController,
     );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    // Start listening to changes.
+    emailController.addListener(_printLatestValue);
+    passwordController.addListener(_printLatestValue);
+    firstnameController.addListener(_printLatestValue);
+    lastnameController.addListener(_printLatestValue);
+    phoneController.addListener(_printLatestValue);
+  }
+
+  @override
+  void dispose() {
+    // Clean up the controller when the widget is removed from the widget tree.
+    // This also removes the _printLatestValue listener.
+    emailController.dispose();
+    super.dispose();
+  }
+
+  void _printLatestValue() {
+    email = emailController.text;
+    password = passwordController.text;
+    firstname = firstnameController.text;
+    lastname = lastnameController.text;
+    phone = phoneController.text;
   }
 
   Widget acceptTermsTextRow() {
@@ -238,7 +294,17 @@ class _SignupPageState extends State<SignupPage> {
       elevation: 0,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),
       onPressed: () {
-        print("Routing to your account");
+        AuthService().addUser(email, password, firstname, lastname, phone).then((val) {
+
+            Fluttertoast.showToast(
+                msg: 'authenticated',
+                gravity: ToastGravity.BOTTOM,
+                backgroundColor: Colors.green,
+                textColor: Colors.white,
+                fontSize: 16.0,
+                timeInSecForIosWeb: 1);
+                Navigator.pushNamed(context, MyRoutes.homeRoute);
+        });
       },
       textColor: Colors.white,
       padding: EdgeInsets.all(0.0),
