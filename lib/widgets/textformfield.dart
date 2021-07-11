@@ -39,6 +39,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
       borderRadius: BorderRadius.circular(30.0),
       elevation: large ? 12 : (medium ? 10 : 8),
       child: TextFormField(
+        obscureText: widget.obscureText,
         controller: widget.textEditingController,
         keyboardType: widget.keyboardType,
         cursorColor: Colors.orange[200],
