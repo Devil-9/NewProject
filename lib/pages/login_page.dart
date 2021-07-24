@@ -22,8 +22,8 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   bool changebutton = false;
-  var email;
-  var password;
+  var email = "";
+  var password = "";
   var token;
 
   final _formkey = GlobalKey<FormState>();
@@ -262,7 +262,8 @@ class _LoginScreenState extends State<LoginScreen> {
       elevation: 0,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),
       onPressed: () {
-        AuthService().login(email, password).then((val) {
+        if(email.length != 0 && password.length != 0) {
+          AuthService().login(email, password).then((val) {
           if (val.data['success']) {
             token = val.data['token'];
             print(token);
@@ -285,6 +286,26 @@ class _LoginScreenState extends State<LoginScreen> {
                 timeInSecForIosWeb: 1);
           }
         });
+        } else {
+          if(email.length != 0) {
+            Fluttertoast.showToast(
+                msg: 'please enter your password',
+                gravity: ToastGravity.BOTTOM,
+                backgroundColor: Colors.red,
+                textColor: Colors.white,
+                fontSize: 16.0,
+                timeInSecForIosWeb: 1);
+          }
+          else {
+            Fluttertoast.showToast(
+                msg: 'please enter your email',
+                gravity: ToastGravity.BOTTOM,
+                backgroundColor: Colors.red,
+                textColor: Colors.white,
+                fontSize: 16.0,
+                timeInSecForIosWeb: 1);
+          }
+        }
 
         print(email);
         print(password);
