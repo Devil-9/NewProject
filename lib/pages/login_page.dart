@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter1/services/authservice.dart';
 import 'package:flutter1/utils/routs.dart';
 import 'package:flutter1/widgets/custom_shape.dart';
 import 'package:flutter1/widgets/responsive_ui.dart';
 import 'package:flutter1/widgets/textformfield.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class LoginPage extends StatelessWidget {
   @override
@@ -20,24 +22,25 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   bool changebutton = false;
-  String name = "";
-  String password = "";
+  var email = "";
+  var password = "";
+  var token;
 
   final _formkey = GlobalKey<FormState>();
 
-  moveToHome(BuildContext context) async {
-    if (_formkey.currentState!.validate()) {
-      setState(() {
-        changebutton = true;
-      });
+  // moveToHome(BuildContext context) async {
+  //   if (_formkey.currentState!.validate()) {
+  //     setState(() {
+  //       changebutton = true;
+  //     });
 
-      await Future.delayed(Duration(seconds: 1));
-      await Navigator.pushNamed(context, MyRoutes.homeRoute);
-      setState(() {
-        changebutton = false;
-      });
-    }
-  }
+  //     await Future.delayed(Duration(seconds: 1));
+  //     await Navigator.pushNamed(context, MyRoutes.homeRoute);
+  //     setState(() {
+  //       changebutton = false;
+  //     });
+  //   }
+  // }
 
   late double _height;
   late double _width;
@@ -209,7 +212,7 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   void _printLatestValue() {
-    name = emailController.text;
+    email = emailController.text;
     password = passwordController.text;
   }
 
@@ -259,12 +262,56 @@ class _LoginScreenState extends State<LoginScreen> {
       elevation: 0,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),
       onPressed: () {
-        Navigator.pushNamed(context, MyRoutes.homeRoute);
-        print(name);
+        if(email.length != 0 && password.length != 0) {
+          AuthService().login(email, password).then((val) {
+          if (val.data['success']) {
+            token = val.data['token'];
+            print(token);
+            Fluttertoast.showToast(
+                msg: 'authenticated',
+                gravity: ToastGravity.BOTTOM,
+                backgroundColor: Colors.green,
+                textColor: Colors.white,
+                fontSize: 16.0,
+                timeInSecForIosWeb: 1);
+            Navigator.pushNamed(context, MyRoutes.homeRoute);
+          } else {
+            token = val.data['msg'];
+            Fluttertoast.showToast(
+                msg: token,
+                gravity: ToastGravity.BOTTOM,
+                backgroundColor: Colors.red,
+                textColor: Colors.white,
+                fontSize: 16.0,
+                timeInSecForIosWeb: 1);
+          }
+        });
+        } else {
+          if(email.length != 0) {
+            Fluttertoast.showToast(
+                msg: 'please enter your password',
+                gravity: ToastGravity.BOTTOM,
+                backgroundColor: Colors.red,
+                textColor: Colors.white,
+                fontSize: 16.0,
+                timeInSecForIosWeb: 1);
+          }
+          else {
+            Fluttertoast.showToast(
+                msg: 'please enter your email',
+                gravity: ToastGravity.BOTTOM,
+                backgroundColor: Colors.red,
+                textColor: Colors.white,
+                fontSize: 16.0,
+                timeInSecForIosWeb: 1);
+          }
+        }
+
+        print(email);
         print(password);
-        Scaffold.of(context)
-            // ignore: deprecated_member_use
-            .showSnackBar(SnackBar(content: Text('Login Successful')));
+        // Scaffold.of(context)
+        //     // ignore: deprecated_member_use
+        //     .showSnackBar(SnackBar(content: Text('Wecome' + email)));
       },
       textColor: Colors.white,
       padding: EdgeInsets.all(0.0),

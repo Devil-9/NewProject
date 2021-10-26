@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
         fontFamily: GoogleFonts.lato().fontFamily,
       ),
       darkTheme: ThemeData(brightness: Brightness.dark),
-      //debugShowCheckedModeBanner: false,
+      debugShowCheckedModeBanner: false,
       initialRoute: MyRoutes.splashcreenRoute,
       routes: {
         "/": (context) => SplashScreen(),

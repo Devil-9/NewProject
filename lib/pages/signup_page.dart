@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter1/pages/login_page.dart';
+import 'package:flutter1/services/authservice.dart';
+import 'package:flutter1/utils/routs.dart';
 import 'package:flutter1/widgets/custom_shape.dart';
 import 'package:flutter1/widgets/customappbar.dart';
 import 'package:flutter1/widgets/responsive_ui.dart';
 import 'package:flutter1/widgets/textformfield.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class SignupPage extends StatefulWidget {
   @override
@@ -11,12 +14,37 @@ class SignupPage extends StatefulWidget {
 }
 
 class _SignupPageState extends State<SignupPage> {
+  bool changebutton = false;
+  var firstname="", lastname, email, password, phone,token;
   bool checkBoxValue = false;
   late double _height;
   late double _width;
   late double _pixelRatio;
   late bool _large;
   late bool _medium;
+
+  final _formkey = GlobalKey<FormState>();
+
+  // moveToHome(BuildContext context) async {
+  //   if (_formkey.currentState!.validate()) {
+  //     setState(() {
+  //       changebutton = true;
+  //     });
+
+  //     await Future.delayed(Duration(seconds: 1));
+  //     await Navigator.pushNamed(context, MyRoutes.homeRoute);
+  //     setState(() {
+  //       changebutton = false;
+  //     });
+  //   }
+  // }
+
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+  TextEditingController firstnameController = TextEditingController();
+  TextEditingController lastnameController = TextEditingController();
+  TextEditingController phoneController = TextEditingController();
+  GlobalKey<FormState> _key = GlobalKey();
 
   @override
   Widget build(BuildContext context) {
@@ -43,6 +71,7 @@ class _SignupPageState extends State<SignupPage> {
                   height: _height / 35,
                 ),
                 button(),
+                loginTextRow(),
                 infoTextRow(),
                 socialIconsRow(),
                 //signInTextRow(),
@@ -162,7 +191,7 @@ class _SignupPageState extends State<SignupPage> {
       keyboardType: TextInputType.text,
       icon: Icons.person,
       hint: "First Name",
-      textEditingController: TextEditingController(),
+      textEditingController: firstnameController,
       obscureText: false,
     );
   }
@@ -172,7 +201,7 @@ class _SignupPageState extends State<SignupPage> {
       keyboardType: TextInputType.text,
       icon: Icons.person,
       hint: "Last Name",
-      textEditingController: TextEditingController(),
+      textEditingController: lastnameController,
       obscureText: false,
     );
   }
@@ -182,7 +211,7 @@ class _SignupPageState extends State<SignupPage> {
       keyboardType: TextInputType.emailAddress,
       icon: Icons.email,
       hint: "Email ID",
-      textEditingController: TextEditingController(),
+      textEditingController: emailController,
       obscureText: false,
     );
   }
@@ -192,7 +221,7 @@ class _SignupPageState extends State<SignupPage> {
       keyboardType: TextInputType.number,
       icon: Icons.phone,
       hint: "Mobile Number",
-      textEditingController: TextEditingController(),
+      textEditingController: phoneController,
       obscureText: false,
     );
   }
@@ -203,8 +232,36 @@ class _SignupPageState extends State<SignupPage> {
       obscureText: true,
       icon: Icons.lock,
       hint: "Password",
-      textEditingController: TextEditingController(),
+      textEditingController: passwordController,
     );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    // Start listening to changes.
+    emailController.addListener(_printLatestValue);
+    passwordController.addListener(_printLatestValue);
+    firstnameController.addListener(_printLatestValue);
+    lastnameController.addListener(_printLatestValue);
+    phoneController.addListener(_printLatestValue);
+  }
+
+  @override
+  void dispose() {
+    // Clean up the controller when the widget is removed from the widget tree.
+    // This also removes the _printLatestValue listener.
+    emailController.dispose();
+    super.dispose();
+  }
+
+  void _printLatestValue() {
+    email = emailController.text;
+    password = passwordController.text;
+    firstname = firstnameController.text;
+    lastname = lastnameController.text;
+    phone = phoneController.text;
   }
 
   Widget acceptTermsTextRow() {
@@ -215,10 +272,10 @@ class _SignupPageState extends State<SignupPage> {
         children: <Widget>[
           Checkbox(
               activeColor: Colors.orange[200],
-              value: checkBoxValue,
+              value: this.checkBoxValue, 
               onChanged: (newValue) {
                 setState(() {
-                  //checkBoxValue = newValue;
+                  this.checkBoxValue = newValue!;
                 });
               }),
           Text(
@@ -238,7 +295,118 @@ class _SignupPageState extends State<SignupPage> {
       elevation: 0,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),
       onPressed: () {
-        print("Routing to your account");
+        String pattern = r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
+         RegExp regExp = new RegExp(pattern);
+        String pattern1 = r'(^[0-9]*$)';
+         RegExp regExp1 = new RegExp(pattern1);
+        if(firstname.length==0){
+           Fluttertoast.showToast(
+                msg: 'First name can not be empty!!',
+                gravity: ToastGravity.BOTTOM,
+                backgroundColor: Colors.red,
+                textColor: Colors.white,
+                fontSize: 16.0,
+                timeInSecForIosWeb: 2);
+        }
+        else if(lastname.length==0){
+         Fluttertoast.showToast(
+                msg: 'Last name can not be empty!!',
+                gravity: ToastGravity.BOTTOM,
+                backgroundColor: Colors.red,
+                textColor: Colors.white,
+                fontSize: 16.0,
+                timeInSecForIosWeb: 2);
+        }
+        else if(email.length==0){
+         Fluttertoast.showToast(
+                msg: 'Email can not be empty',
+                gravity: ToastGravity.BOTTOM,
+                backgroundColor: Colors.red,
+                textColor: Colors.white,
+                fontSize: 16.0,
+                timeInSecForIosWeb: 2);
+        }
+        else if(!regExp.hasMatch(email)){
+         Fluttertoast.showToast(
+                msg: 'Email is invalid!!!',
+                gravity: ToastGravity.BOTTOM,
+                backgroundColor: Colors.red,
+                textColor: Colors.white,
+                fontSize: 16.0,
+                timeInSecForIosWeb: 2);
+        }
+        else if(phone.length==0||phone.length!=10||!regExp1.hasMatch(phone)){
+         Fluttertoast.showToast(
+                msg: 'Enter a valid phone number!!!',
+                gravity: ToastGravity.BOTTOM,
+                backgroundColor: Colors.red,
+                textColor: Colors.white,
+                fontSize: 16.0,
+                timeInSecForIosWeb: 2);
+        }
+        else if(password.length==0){
+         Fluttertoast.showToast(
+                msg: 'Password can not be empty!!!!',
+                gravity: ToastGravity.BOTTOM,
+                backgroundColor: Colors.red,
+                textColor: Colors.white,
+                fontSize: 16.0,
+                timeInSecForIosWeb: 2);
+        }
+        else if(password.length<8){
+         Fluttertoast.showToast(
+                msg: 'Password should be at least 8 digits!!!',
+                gravity: ToastGravity.BOTTOM,
+                backgroundColor: Colors.red,
+                textColor: Colors.white,
+                fontSize: 16.0,
+                timeInSecForIosWeb: 2);
+        }
+        else if(!(password.contains("!")||password.contains("@")||password.contains("#")||password.contains("&"))){
+         Fluttertoast.showToast(
+                msg: 'Paswword should contain any special character!!!',
+                gravity: ToastGravity.BOTTOM,
+                backgroundColor: Colors.red,
+                textColor: Colors.white,
+                fontSize: 16.0,
+                timeInSecForIosWeb: 2);
+        }
+        else if(!checkBoxValue){
+           Fluttertoast.showToast(
+                msg: 'Please check the box!!!',
+                gravity: ToastGravity.BOTTOM,
+                backgroundColor: Colors.red,
+                textColor: Colors.white,
+                fontSize: 16.0,
+                timeInSecForIosWeb: 2);
+        }
+        else{
+          AuthService().login(email, password).then((val) {
+            token = val.data['msg'];
+          if (token=='Wrong Password') {
+            //print(token);
+            Fluttertoast.showToast(
+                msg: 'Email already exist!!',
+                gravity: ToastGravity.BOTTOM,
+                backgroundColor: Colors.red,
+                textColor: Colors.white,
+                fontSize: 16.0,
+                timeInSecForIosWeb: 1);
+          } else {
+             AuthService().addUser(email, password, firstname, lastname, phone).then((val) {
+
+            Fluttertoast.showToast(
+                msg: 'authenticated',
+                gravity: ToastGravity.BOTTOM,
+                backgroundColor: Colors.green,
+                textColor: Colors.white,
+                fontSize: 16.0,
+                timeInSecForIosWeb: 1);
+                Navigator.pushNamed(context, MyRoutes.homeRoute);
+        });
+          }
+        });
+        }
       },
       textColor: Colors.white,
       padding: EdgeInsets.all(0.0),
@@ -254,6 +422,39 @@ class _SignupPageState extends State<SignupPage> {
         padding: const EdgeInsets.all(12.0),
         child: Text('SIGN UP',
             style: TextStyle(fontSize: _large ? 14 : (_medium ? 12 : 10))),
+      ),
+    );
+  }
+
+Widget loginTextRow() {
+    return Container(
+      margin: EdgeInsets.only(top: _height / 120.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Text(
+            "Have an account?",
+            style: TextStyle(
+                fontWeight: FontWeight.w400,
+                fontSize: _large ? 14 : (_medium ? 12 : 10)),
+          ),
+          SizedBox(
+            width: 5,
+          ),
+          GestureDetector(
+            onTap: () {
+              Navigator.pushNamed(context, MyRoutes.loginRoute);
+              //print("Routing to Sign up screen");
+            },
+            child: Text(
+              "Sign In",
+              style: TextStyle(
+                  fontWeight: FontWeight.w800,
+                  color: Colors.orange[200],
+                  fontSize: _large ? 19 : (_medium ? 17 : 15)),
+            ),
+          )
+        ],
       ),
     );
   }
@@ -334,4 +535,5 @@ class _SignupPageState extends State<SignupPage> {
       ),
     );
   }
+
 }
